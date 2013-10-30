@@ -15,10 +15,13 @@ module NHL
 	# This throttle variable adorns a sleep operation between queries
 	throttle  = 1
 
+	# SportsData's access level
+	accessLevel = ENV[ "sportsdata_access_level" ] || "t3"
+
 	# Standings
 	# =========
 	# URL structure: http://api.sportsdatallc.org/nhl-[access_level][version]/seasontd/[season]/[nhl_season]/standings.xml?api_key=[your_api_key]
-	url = "http://api.sportsdatallc.org/nhl-t3/seasontd/2013/reg/standings.xml?api_key=#{apiKey}"
+	url = "http://api.sportsdatallc.org/nhl-#{accessLevel}/seasontd/2013/reg/standings.xml?api_key=#{apiKey}"
 
 	xml = Nokogiri::XML( open( url ) )
 	xml.remove_namespaces!
@@ -44,7 +47,7 @@ module NHL
 	todayStr= Time.now.strftime( "%Y/%m/%d" )
 	puts "Schedule for #{ todayStr }:"
 
-	url = "http://api.sportsdatallc.org/nhl-t3/games/#{ todayStr }/schedule.xml?api_key=#{ apiKey }"
+	url = "http://api.sportsdatallc.org/nhl-#{accessLevel}/games/#{ todayStr }/schedule.xml?api_key=#{ apiKey }"
 	xml = Nokogiri::XML( open( url ) )
 	xml.remove_namespaces!
 
